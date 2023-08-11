@@ -2,18 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-
-const connection = mysql.createConnection({
-    host: 'db.teamlog.kr',
-    user: 'admin',
-    password: 'teamlog2023!',
-    database: 'choeun'
-});
-
-connection.connect((err) => {
-    if (err) throw err;
-    console.log('Connected to MySQL database!');
-});
+const db = require('../db');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -28,9 +17,17 @@ router.post('/login', (req, res) => {
     const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
     const values = [ username, password ];
 
-    connection.query(query, values, (error, result)=> {
-        if(error) throw error;
-        res.render('')
+    db.query(query, values, (error, result)=> {
+        if(error) console.error(error);
+
+        if(result.length > 0) {
+            req.session.isLoggedIn = true;
+            req.session.username = result[0].username;
+
+            res.redirect('/');
+        } else {
+            res.render('login-fail');
+        }
     });
 });
 

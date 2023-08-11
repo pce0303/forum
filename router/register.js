@@ -2,18 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-
-const connection = mysql.createConnection({
-    host: 'db.teamlog.kr',
-    user: 'admin',
-    password: 'teamlog2023!',
-    database: 'choeun'
-});
-
-connection.connect((err) => {
-    if (err) throw err;
-    console.log('Connected to MySQL database!');
-});
+const db = require('../db');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -25,14 +14,21 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
     const { username, password } = req.body;
-    const query = 'INSERT INTO Info (username, password) VALUES (?, ?)';
+    const query1 = 'SELECT COUNT(*) AS count FROM info WHERE username = ?'
+    const query2 = 'INSERT INTO info (username, password) VALUES (?, ?)';
     const values = [username, password];
 
-    connection.query(query, values, (error, result)=> {
-        if(error) throw error;
-        res.status(201).json({ id: result.inserted });
-        console.log('inserted : username, password');
-        res.send('success');
+    db.query(query1, [username], (error, results)=> {
+        const count = results[0].count;
+
+        if(count === 0) {
+            db.query(query2, values, (error)=> {
+                if(error) throw error;
+                res.redirect('/login');
+            });
+        } else {
+            res.render('register-fail');
+        }
     });
 });
 
