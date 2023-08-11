@@ -1,6 +1,15 @@
 const express = require('express');
+const registerRouter = require('./router/register');
+const loginRouter = require('./router/login');
+
 const port = 3000;
-const app = require('./router/register');
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 app.get('/', (req, res) => {
     res.render('main');

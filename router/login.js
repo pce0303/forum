@@ -1,5 +1,5 @@
-// const express = require('express');
-const app = require('./register');
+const express = require('express');
+const router = express.Router();
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
@@ -15,20 +15,23 @@ connection.connect((err) => {
     console.log('Connected to MySQL database!');
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+router.set('view engine', 'ejs');
 
-app.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
     res.render('Login');
 });
 
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const sql = '';
+    const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    const values = [ username, password ];
 
-    connection.query('', (error, result)=> {
+    connection.query(query, values, (error, result)=> {
         if(error) throw error;
-        res.send('success');
+        res.render('')
     });
 });
+
+module.exports = router;

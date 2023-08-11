@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 
@@ -15,18 +15,20 @@ connection.connect((err) => {
     console.log('Connected to MySQL database!');
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+router.set('view engine', 'ejs');
 
-app.get('/register', (req, res) => {
+router.get('/register', (req, res) => {
     res.render('register');
 });
 
-app.post('/register', (req, res) => {
+router.post('/register', (req, res) => {
     const { username, password } = req.body;
+    const query = 'INSERT INTO Info (username, password) VALUES (?, ?)';
+    const values = [username, password];
 
-    connection.query('insert into Info (username, password) values (?, ?)', [username, password], (error, result)=> {
+    connection.query(query, values, (error, result)=> {
         if(error) throw error;
         res.status(201).json({ id: result.inserted });
         console.log('inserted : username, password');
@@ -34,4 +36,4 @@ app.post('/register', (req, res) => {
     });
 });
 
-module.exports = app;
+module.exports = router;
