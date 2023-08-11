@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-var router = express.Router();
+const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
     host: 'db.teamlog.kr',
@@ -16,26 +15,23 @@ connection.connect((err) => {
     console.log('Connected to MySQL database!');
 });
 
-app.set('views', '.././views');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-router.get('/register', (req, res) => {
+app.get('/register', (req, res) => {
     res.render('register');
 });
 
-router.post('/register', (req, res) => {
+app.post('/register', (req, res) => {
     const { username, password } = req.body;
-    var sql_insert = { username, password };
 
-    connection.query('select username from Info where username=?', [username], (err,rows)=>{
-        if(rows.length) {
-            res.render('register-fail');
-        }else{
-            
-        }
-    })
-})
+    connection.query('insert into Info (username, password) values (?, ?)', [username, password], (error, result)=> {
+        if(error) throw error;
+        res.status(201).json({ id: result.inserted });
+        console.log('inserted : username, password');
+        res.send('success');
+    });
+});
 
-module.exports = router;
+module.exports = app;
