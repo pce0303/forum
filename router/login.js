@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const db = require('../db');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-router.set('view engine', 'ejs');
 
 router.get('/login', (req, res) => {
     res.render('Login');
@@ -18,7 +16,7 @@ router.post('/login', (req, res) => {
     const values = [ username, password ];
 
     db.query(query, values, (error, result)=> {
-        if(error) console.error(error);
+        if(error) console.error;
 
         if(result.length > 0) {
             req.session.isLoggedIn = true;
