@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const db = require('../db');
 
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get('/login', (req, res) => {
-    res.render('Login');
-});
+// router.get('/login', (req, res) => {
+//     res.render('Login');
+// });
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -16,7 +16,7 @@ router.post('/login', (req, res) => {
     const values = [ username, password ];
 
     db.query(query, values, (error, result)=> {
-        if(error) console.error;
+        if(error) console.error(error);
 
         if(result.length > 0) {
             req.session.isLoggedIn = true;
