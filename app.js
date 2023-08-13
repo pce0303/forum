@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 
+app.use(express.static('./styles'));
+
 app.get('/', (req, res) => {
     res.render('main');
 });
