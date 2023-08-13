@@ -29,10 +29,10 @@ router.post('/', (req, res) => {
                 if(err) {
                     console.log(err);
                 }
-                res.send('register success');
+                res.redirect('/login');
             });
         } else {
-            res.send('register failed');
+            res.render('register');
         }
     });
 });

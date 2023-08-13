@@ -6,25 +6,27 @@ const db = require('../db');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-// router.get('/login', (req, res) => {
-//     res.render('Login');
-// });
+router.get('/', (req, res) => {
+    res.render('Login');
+});
 
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
     const { username, password } = req.body;
-    const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    const query = 'SELECT * FROM Info WHERE username = ? AND password = ?';
     const values = [ username, password ];
 
-    db.query(query, values, (error, result)=> {
-        if(error) console.error(error);
+    db.query(query, values, (error, results, fields)=> {
+        console.log('query worked', results);
+        console.log(fields);
+        console.log(error);
 
-        if(result.length > 0) {
+        if(results.length > 0) {
             req.session.isLoggedIn = true;
-            req.session.username = result[0].username;
+            req.session.username = results[0].username;
 
             res.redirect('/');
         } else {
-            res.render('login-fail');
+            res.render('Login');
         }
     });
 });

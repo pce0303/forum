@@ -27,14 +27,6 @@ app.get('/', (req, res) => {
     res.render('main');
 });
 
-app.get('/login', (req, res) => {
-    res.render('Login');
-});
-
-// app.get('/register', (req, res) => {
-//     res.render('Register');
-// });
-
 app.listen(port, (error) => {
     if (error) console.error(error);
     console.log(`Server is running on port ${port}`);
