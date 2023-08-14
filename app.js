@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const registerRouter = require('./router/register');
 const loginRouter = require('./router/login');
 const postRouter = require('./router/post');
+const mainRouter = require('./router/main');
 
 const port = 3000;
 const app = express();
@@ -24,12 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/post', postRouter);
+app.use('/', mainRouter);
 
 app.use(express.static('./styles'));
-
-app.get('/', (req, res) => {
-    res.render('main');
-});
 
 app.listen(port, (error) => {
     if (error) console.error(error);
