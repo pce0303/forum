@@ -26,4 +26,16 @@ router.post('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    const postID = req.params.id;
+    const query = 'SELECT title, content, writer FROM post_table WHERE ID = ?';
+
+    db.query(query, [postID], (err, results, fields) => {
+        if (err) console.log(err);
+
+        const selectedPost = results[0];
+        res.render('viewPost', { selectedPost });
+    });
+});
+
 module.exports = router;

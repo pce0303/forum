@@ -15,8 +15,8 @@
     <h3>게시물 목록</h3>
 
     <ul>
-        <% titles.forEach(title => { %>
-            <li><%= title %></li>
+        <% titles.forEach((title, index) => { %>
+            <li><a href="/post/<%= index + 1 %>"><%= title %></a></li>
         <% }); %>
     </ul>
 
