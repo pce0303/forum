@@ -7,7 +7,14 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/', (req, res) => {
-    res.render('createPost');
+    const query = 'SELECT title FROM post_table';
+
+    db.query(query, (err, results, fields) => {
+        if (err) console.error(err);
+
+        const titles = results.map(result => result.title);
+        res.render('postValue', { titles });
+    });
 });
 
 router.post('/', (req, res) => {
@@ -22,7 +29,7 @@ router.post('/', (req, res) => {
         console.log(fields);
         if(err) console.log(err);
 
-        res.redirect('/');
+        res.render('postValue');
     });
 });
 
@@ -37,5 +44,7 @@ router.get('/:id', (req, res) => {
         res.render('viewPost', { selectedPost });
     });
 });
+
+
 
 module.exports = router;
