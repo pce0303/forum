@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #FCF6F5;
+    background-color: #fcf6f5;
     margin: 0;
     padding-top: 150px;
     padding-right: 50px;
@@ -57,5 +57,5 @@ input[type="password"]:focus {
 }
 
 input[type="submit"]:hover {
-    background-color: #141414;
+    background-color: #576d90;
 }
