@@ -12,6 +12,14 @@
     <button id="moveRegister">register</button>
     <button id="movePost">write</button>
 
+    <h3>게시물 목록</h3>
+
+    <ul>
+        <% titles.forEach(title => { %>
+            <li><%= title %></li>
+        <% }); %>
+    </ul>
+
     <script>
         const moveLogin = document.getElementById("moveLogin");
         const moveRegister = document.getElementById("moveRegister");
