@@ -8,8 +8,26 @@
 </head>
 <body>
     <h1>Welcome</h1>
-    <button>login</button>
-    <button>register</button>
-    <button>write</button>
+    <button id="moveLogin">login</button>
+    <button id="moveRegister">register</button>
+    <button id="movePost">write</button>
+
+    <script>
+        const moveLogin = document.getElementById("moveLogin");
+        const moveRegister = document.getElementById("moveRegister");
+        const movePost = document.getElementById("movePost");
+
+        moveLogin.addEventListener('click', () => {
+            window.location.href = '/login';
+        });
+
+        moveRegister.addEventListener('click', () => {
+            window.location.href = '/register';
+        });
+
+        movePost.addEventListener('click', () => {
+            window.location.href = '/post';
+        });
+    </script>
 </body>
 </html>
